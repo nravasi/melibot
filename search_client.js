@@ -10,7 +10,7 @@ var search = function (event, callback){
     	}
     	console.log(response);
     	return callback(event, undefined, body);
-    } 
+    });
 }
 
 module.exports{
