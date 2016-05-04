@@ -1,4 +1,5 @@
 var request = require('request');
+var util = require('util');
 
 var search = function (event, callback){
     request({
@@ -13,9 +14,8 @@ var search = function (event, callback){
     	if(error){
     		return callback(event, error);
     	}
-    	console.log("La response es" + response);
-    	console.log("el site es" + response.body.site_id);
-    	console.log("La query es" + response.query);
+    	console.log("La response es" + util.inspect(response, false, null));
+
     	return callback(event, undefined, body);
     });
 }
