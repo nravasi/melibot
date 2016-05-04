@@ -14,8 +14,7 @@ var search = function (event, callback){
     		return callback(event, error);
     	}
     	console.log("La response es" + response);
-    	console.log("El body es" + body);
-    	console.log("el site es" + body.site_id);
+    	console.log("el site es" + response.body.site_id);
     	console.log("La query es" + response.query);
     	return callback(event, undefined, body);
     });
