@@ -13,6 +13,6 @@ var search = function (event, callback){
     });
 }
 
-module.exports{
+module.exports = {
 	search: search
 }
