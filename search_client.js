@@ -1,3 +1,4 @@
+var request = require('request');
 
 var search = function (event, callback){
     request({
