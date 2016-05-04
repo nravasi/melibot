@@ -14,9 +14,9 @@ var search = function (event, callback){
     	if(error){
     		return callback(event, error);
     	}
-    	console.log("La response es" + util.inspect(response, false, null));
+    	//console.log("La response es" + util.inspect(response, false, null));
 
-    	return callback(event, undefined, body);
+    	return callback(event, undefined, JSON.parse(body));
     });
 }
 
