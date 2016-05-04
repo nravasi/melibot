@@ -47,9 +47,9 @@ app.post('/webhook/', function (req, res) {
 var handleClientResponse = function(event, err, body){
     console.log("La response es" + util.inspect(response, false, null));
     if(err){
-        sendTextMessage(event.sender, "Hubo un error");
+        sendTextMessage(event.sender.id, "Hubo un error");
     }else{
-        sendTextMessage(event.sender, body.site_id);
+        sendTextMessage(event.sender.id, body.site_id);
     }
 }
 
