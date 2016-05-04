@@ -13,7 +13,10 @@ var search = function (event, callback){
     	if(error){
     		return callback(event, error);
     	}
-    	console.log(response);
+    	console.log("La response es" + response);
+    	console.log("El body es" + body);
+    	console.log("el site es" + body.site_id);
+    	console.log("La query es" + response.query);
     	return callback(event, undefined, body);
     });
 }
