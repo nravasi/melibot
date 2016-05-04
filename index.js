@@ -1,6 +1,7 @@
 var express = require('express')
 var bodyParser = require('body-parser')
 var request = require('request')
+var searchClient = require('./search_client')
 var app = express()
 
 app.set('port', (process.env.PORT || 5000))
@@ -30,21 +31,25 @@ app.listen(app.get('port'), function() {
 })
 
 app.post('/webhook/', function (req, res) {
+    //use async
     messaging_events = req.body.entry[0].messaging
     for (i = 0; i < messaging_events.length; i++) {
         event = req.body.entry[0].messaging[i]
         sender = event.sender.id
         if (event.message && event.message.text) {
-            text = event.message.text
-            if (text === 'Generic') {
-                sendGenericMessage(sender)
-                continue
-            }
-            sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+            searchClient.search(event, handleClientResponse);
         }
     }
     res.sendStatus(200)
 })
+
+var handleClientResponse = function(event, err, body){
+    if(err){
+        sendTextMessage(event.sender, "Hubo un error");
+    }else{
+        sendTextMessage(event.sender, body.site_id);
+    }
+}
 
 function sendTextMessage(sender, text) {
     messageData = {
