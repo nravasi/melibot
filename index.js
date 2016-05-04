@@ -2,6 +2,7 @@ var express = require('express')
 var bodyParser = require('body-parser')
 var request = require('request')
 var searchClient = require('./search_client')
+var util = require('util');
 var app = express()
 
 app.set('port', (process.env.PORT || 5000))
@@ -44,6 +45,7 @@ app.post('/webhook/', function (req, res) {
 })
 
 var handleClientResponse = function(event, err, body){
+    console.log("La response es" + util.inspect(response, false, null));
     if(err){
         sendTextMessage(event.sender, "Hubo un error");
     }else{
