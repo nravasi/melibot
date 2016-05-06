@@ -69,9 +69,7 @@ var handleClientResponse = function(event, err, body){
 }
 
 function sendTextMessage(sender, text) {
-    console.log(text);
-    console.log(sender);
-    sendTextMessage(sender, {
+    sendMessage(sender, {
         text:text
     })
 }
