@@ -46,12 +46,12 @@ app.post('/webhook/', function (req, res) {
 })
 
 var handleClientResponse = function(event, err, body){
-    console.log("La response es" + util.inspect(body, false, null));
+    //console.log("La response es" + util.inspect(body, false, null));
     var senderId = event.sender.id;
     if(err){
         sendTextMessage(senderId, "Hubo un error");
     }else{
-        if(!body.results.length){
+        if(!body.results){
             return sendTextMessage(senderId, "No hay resultados");
         }
         var elements = item_formatter.formatItems(body.results)
