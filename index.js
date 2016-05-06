@@ -51,7 +51,7 @@ var handleClientResponse = function(event, err, body){
     if(err){
         sendTextMessage(senderId, "Hubo un error");
     }else{
-        if(!body.results){
+        if(!body.results || !body.results.length){
             return sendTextMessage(senderId, "No hay resultados");
         }
         var elements = item_formatter.formatItems(body.results)
