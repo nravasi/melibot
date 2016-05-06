@@ -2,6 +2,7 @@ var express = require('express')
 var bodyParser = require('body-parser')
 var request = require('request')
 var searchClient = require('./search_client')
+var item_formatter = require('./item_formatter')
 var util = require('util');
 var app = express()
 
@@ -46,24 +47,41 @@ app.post('/webhook/', function (req, res) {
 
 var handleClientResponse = function(event, err, body){
     console.log("La response es" + util.inspect(body, false, null));
+    var senderId = event.sender.id;
     if(err){
-        sendTextMessage(event.sender.id, "Hubo un error");
+        sendTextMessage(senderId, "Hubo un error");
     }else{
-        sendTextMessage(event.sender.id, body.site_id);
+        if(!body.results.length){
+            return sendTextMessage(senderId, "No hay resultados");
+        }
+        var elements = item_formatter.formatItems(body.results)
+
+        return sendMessage(senderId, {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "generic",
+                    "elements": elements
+                }
+            }
+        });
     }
 }
 
 function sendTextMessage(sender, text) {
-    messageData = {
+    sendTextMessage(sender, {
         text:text
-    }
+    })
+}
+
+function sendMessage(sender, data){
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {access_token:token},
         method: 'POST',
         json: {
             recipient: {id:sender},
-            message: messageData,
+            message: data,
         }
     }, function(error, response, body) {
         if (error) {
@@ -74,53 +92,5 @@ function sendTextMessage(sender, text) {
     })
 }
 
-function sendGenericMessage(sender) {
-    messageData = {
-        "attachment": {
-            "type": "template",
-            "payload": {
-                "template_type": "generic",
-                "elements": [{
-                    "title": "First card",
-                    "subtitle": "Element #1 of an hscroll",
-                    "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
-                    "buttons": [{
-                        "type": "web_url",
-                        "url": "https://www.messenger.com",
-                        "title": "web url"
-                    }, {
-                        "type": "postback",
-                        "title": "Postback",
-                        "payload": "Payload for first element in a generic bubble",
-                    }],
-                }, {
-                    "title": "Second card",
-                    "subtitle": "Element #2 of an hscroll",
-                    "image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
-                    "buttons": [{
-                        "type": "postback",
-                        "title": "Postback",
-                        "payload": "Payload for second element in a generic bubble",
-                    }],
-                }]
-            }
-        }
-    }
-    request({
-        url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: {access_token:token},
-        method: 'POST',
-        json: {
-            recipient: {id:sender},
-            message: messageData,
-        }
-    }, function(error, response, body) {
-        if (error) {
-            console.log('Error sending messages: ', error)
-        } else if (response.body.error) {
-            console.log('Error: ', response.body.error)
-        }
-    })
-}
 
 var token = "EAAD1W15TivwBAJQeP0mdn2QNmi4HVlJ42bO1jDDNZBzAQqItXPmprRzZBVGbnIc2hrugPnFtnShzZAORlKzZCLQOWqZBnkHlC1zhtm1aXcufIGFaUZCZAD1LHnwtLHDqzDPuUmP1ZCgOUigpuYAH6TrWnE0V9yUfAuHU86VBogxYGwZDZD"
