@@ -7,7 +7,7 @@ var formatItems = function(results){
 		return {
 			title: it.title,
 			subtitle: '$' + it.price,
-			image_url: _.replace(it.thumbnail, '-I', '-A'),	
+			image_url: _.replace(it.thumbnail, '-I', '-C'),	
 			buttons: [{
 				type: 'web_url',
 				url: it.permalink,
