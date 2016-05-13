@@ -5,6 +5,7 @@ var searchClient = require('./search_client')
 var item_formatter = require('./item_formatter')
 var util = require('util');
 var app = express()
+var Wit = require('node-wit').Wit;
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -39,15 +40,13 @@ app.post('/webhook/', function (req, res) {
         event = req.body.entry[0].messaging[i]
         sender = event.sender.id
         if (event.message && event.message.text) {
-            searchClient.search(event, handleClientResponse);
         }
     }
     res.sendStatus(200)
 })
 
-var handleClientResponse = function(event, err, body){
+var handleClientResponse = function(senderId, err, body){
     console.log("La response es" + util.inspect(body, false, null));
-    var senderId = event.sender.id;
     if(err){
         sendTextMessage(senderId, "Hubo un error");
     }else{
@@ -77,7 +76,7 @@ function sendTextMessage(sender, text) {
 function sendMessage(sender, data){
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: {access_token:token},
+        qs: {access_token:fb_token},
         method: 'POST',
         json: {
             recipient: {id:sender},
@@ -92,5 +91,44 @@ function sendMessage(sender, data){
     })
 }
 
+var wit_token = "X4RADLYL7NP5VZULIGFVCCULEOFVVTZZ"
 
-var token = "EAAD1W15TivwBAJQeP0mdn2QNmi4HVlJ42bO1jDDNZBzAQqItXPmprRzZBVGbnIc2hrugPnFtnShzZAORlKzZCLQOWqZBnkHlC1zhtm1aXcufIGFaUZCZAD1LHnwtLHDqzDPuUmP1ZCgOUigpuYAH6TrWnE0V9yUfAuHU86VBogxYGwZDZD"
+
+var actions = {
+  say(sessionId, context, message, cb) {
+    // Our bot has something to say!
+    // Let's retrieve the Facebook user whose session belongs to
+    const recipientId = sessions[sessionId].fbid;
+    if (recipientId) {
+      // Yay, we found our recipient!
+      // Let's forward our bot response to her.
+      sendTextMessage(recipientId, message);
+
+        // Let's give the wheel back to our bot
+        cb();
+      };
+    } else {
+      console.log('Oops! Couldn\'t find user for session:', sessionId);
+      // Giving the wheel back to our bot
+      cb();
+    }
+  },
+  merge(sessionId, context, entities, message, cb) {
+    cb(context);
+  },
+  search(sessionId, context, entities, message, cb){
+    console.log('Llamando search, sessionId: %s, message: %s', sessionId, message);
+    console.log("Entities: " + util.inspect(entities));
+    const recipientId = sessions[sessionId].fbid;
+    searchClient.search(recipientId, message, handleClientResponse);
+  }
+  error(sessionId, context, error) {
+    console.log(error.message);
+  },
+  // You should implement your custom actions here
+  // See https://wit.ai/docs/quickstart
+};
+
+var wit = new Wit(wit_token, actions)
+
+var fb_token = "EAAD1W15TivwBAJQeP0mdn2QNmi4HVlJ42bO1jDDNZBzAQqItXPmprRzZBVGbnIc2hrugPnFtnShzZAORlKzZCLQOWqZBnkHlC1zhtm1aXcufIGFaUZCZAD1LHnwtLHDqzDPuUmP1ZCgOUigpuYAH6TrWnE0V9yUfAuHU86VBogxYGwZDZD"
