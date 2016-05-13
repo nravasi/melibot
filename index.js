@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({
     extended: false
 }))
 
-var useWit = false;
+var useWit = true;
 
 // Process application/json
 app.use(bodyParser.json())
@@ -171,6 +171,8 @@ var actions = {
 
     },
     merge(sessionId, context, entities, message, cb) {
+        console.log("Context in merge: " + util.inspect(context, false, null));
+        console.log("Entities in merge: " + util.inspect(entities, false, null));
         cb(context);
     },
     search(sessionId, context, cb) {
