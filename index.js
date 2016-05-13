@@ -37,14 +37,61 @@ app.listen(app.get('port'), function() {
 
 app.post('/webhook/', function(req, res) {
     //use async
-    messaging_events = req.body.entry[0].messaging
+    messaging_events = req.body.entry[0].messaging;
     for (i = 0; i < messaging_events.length; i++) {
         event = req.body.entry[0].messaging[i]
-        sender = event.sender.id
-        if (event.message && event.message.text) {}
+
+        if (event.message && event.message.text) {
+            var sessionId = findOrCreateSession(event.sender.id);
+            wit.runActions(
+                sessionId,
+                event.message.text,
+                sessions[sessionId].context,
+                (error, context) => {
+                    if (error) {
+                        console.log('Oops! Got an error from Wit:', error);
+                    } else {
+                        // Our bot did everything it has to do.
+                        // Now it's waiting for further messages to proceed.
+                        console.log('Waiting for futher messages.');
+
+                        // Based on the session state, you might want to reset the session.
+                        // This depends heavily on the business logic of your bot.
+                        // Example:
+                        // if (context['done']) {
+                        //   delete sessions[sessionId];
+                        // }
+
+                        // Updating the user's current session state
+                        sessions[sessionId].context = context;
+                    }
+                })
+        }
     }
-    res.sendStatus(200)
-})
+    res.sendStatus(200);
+});
+
+var sessions = {};
+
+var findOrCreateSession = (fbid) => {
+    let sessionId;
+    // Let's see if we already have a session for the user fbid
+    Object.keys(sessions).forEach(k => {
+        if (sessions[k].fbid === fbid) {
+            // Yep, got it!
+            sessionId = k;
+        }
+    });
+    if (!sessionId) {
+        // No session found for user fbid, let's create a new one
+        sessionId = new Date().toISOString();
+        sessions[sessionId] = {
+            fbid: fbid,
+            context: {}
+        };
+    }
+    return sessionId;
+};
 
 var handleClientResponse = function(senderId, err, body) {
     if (err) {
