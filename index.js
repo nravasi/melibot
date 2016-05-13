@@ -74,7 +74,7 @@ app.post('/webhook/', function(req, res) {
 var sessions = {};
 
 var findOrCreateSession = (fbid) => {
-    let sessionId;
+    var sessionId;
     // Let's see if we already have a session for the user fbid
     Object.keys(sessions).forEach(k => {
         if (sessions[k].fbid === fbid) {
@@ -149,7 +149,7 @@ var actions = {
     say(sessionId, context, message, cb) {
         // Our bot has something to say!
         // Let's retrieve the Facebook user whose session belongs to
-        const recipientId = sessions[sessionId].fbid;
+        var recipientId = sessions[sessionId].fbid;
         if (recipientId) {
             // Yay, we found our recipient!
             // Let's forward our bot response to her.
@@ -169,7 +169,7 @@ var actions = {
     search(sessionId, context, cb) {
         console.log('Llamando search, sessionId: %s, message: %s', sessionId, context);
         console.log("Entities: " + util.inspect(context));
-        const recipientId = sessions[sessionId].fbid;
+        var recipientId = sessions[sessionId].fbid;
         searchClient.search(recipientId, context, handleClientResponse);
     },
     error(sessionId, context, error) {
