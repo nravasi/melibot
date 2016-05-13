@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({
     extended: false
 }))
 
-var useWit = true;
+var useWit = false;
 
 // Process application/json
 app.use(bodyParser.json())
