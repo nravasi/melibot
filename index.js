@@ -167,10 +167,10 @@ var actions = {
         cb(context);
     },
     search(sessionId, context, cb) {
-        console.log('Llamando search, sessionId: %s, message: %s', sessionId, context);
-        console.log("Entities: " + util.inspect(context));
+        console.log("Entities: " + util.inspect(context, false, null));
         var recipientId = sessions[sessionId].fbid;
         searchClient.search(recipientId, context, handleClientResponse);
+        cb(context);
     },
     error(sessionId, context, error) {
         console.log(error.message);
