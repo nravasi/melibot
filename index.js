@@ -119,10 +119,10 @@ var actions = {
     console.log("Entities: " + util.inspect(entities));
     const recipientId = sessions[sessionId].fbid;
     searchClient.search(recipientId, message, handleClientResponse);
-  }
+  },
   error(sessionId, context, error) {
     console.log(error.message);
-  },
+  }
   // You should implement your custom actions here
   // See https://wit.ai/docs/quickstart
 };
