@@ -170,7 +170,6 @@ var actions = {
         console.log("Entities: " + util.inspect(context, false, null));
         var recipientId = sessions[sessionId].fbid;
         searchClient.search(recipientId, context, handleClientResponse);
-        cb(context);
     },
     error(sessionId, context, error) {
         console.log(error.message);
