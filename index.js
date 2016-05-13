@@ -151,6 +151,16 @@ function sendMessage(sender, data) {
 
 var wit_token = "X4RADLYL7NP5VZULIGFVCCULEOFVVTZZ"
 
+var firstEntityValue = (entities, entity) => {
+    var val = entities && entities[entity] &&
+        Array.isArray(entities[entity]) &&
+        entities[entity].length > 0 &&
+        entities[entity][0].value;
+    if (!val) {
+        return null;
+    }
+    return typeof val === 'object' ? val.value : val;
+};
 
 var actions = {
     say(sessionId, context, message, cb) {
@@ -171,14 +181,16 @@ var actions = {
 
     },
     merge(sessionId, context, entities, message, cb) {
-        console.log("Context in merge: " + util.inspect(context, false, null));
-        console.log("Entities in merge: " + util.inspect(entities, false, null));
+        console.log("Entities: " + util.inspect(entities))
+        var q = firstEntityValue(entities, 'wit/search_query');
+        if (q) {
+            context.q = q;
+        }
         cb(context);
     },
     search(sessionId, context, cb) {
-        console.log("Entities: " + util.inspect(context, false, null));
         var recipientId = sessions[sessionId].fbid;
-        searchClient.search(recipientId, context, handleClientResponse);
+        searchClient.search(recipientId, context.q, handleClientResponse);
     },
     error(sessionId, context, error) {
         console.log(error.message);
