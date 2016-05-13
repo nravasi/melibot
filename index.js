@@ -46,11 +46,10 @@ app.post('/webhook/', function (req, res) {
 })
 
 var handleClientResponse = function(senderId, err, body){
-    console.log("La response es" + util.inspect(body, false, null));
     if(err){
         sendTextMessage(senderId, "Hubo un error");
     }else{
-        if(!body.results.length){
+        if(!body.results || !body.results.length){
             return sendTextMessage(senderId, "No hay resultados");
         }
         var elements = item_formatter.formatItems(body.results)
@@ -68,7 +67,7 @@ var handleClientResponse = function(senderId, err, body){
 }
 
 function sendTextMessage(sender, text) {
-    sendTextMessage(sender, {
+    sendMessage(sender, {
         text:text
     })
 }
