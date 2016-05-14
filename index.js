@@ -95,7 +95,7 @@ var findOrCreateSession = (fbid, event) => {
         sessionId = new Date().toISOString();
         sessions[sessionId] = {
             fbid: fbid,
-            name: event.sender.name
+            name: event.sender.name,
             context: {}
         };
     }
