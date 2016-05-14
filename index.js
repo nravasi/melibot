@@ -170,7 +170,7 @@ var actions = {
         var recipientId = sessions[sessionId].fbid;
         if (recipientId) {
             // Forward the message
-            sendTextMessage(recipientId, message);
+            sendTextMessage(recipientId, message.replace("$name$", sessions[sessionId].name));
         } else {
             console.log('Oops! Couldn\'t find user for session:', sessionId);
         }
@@ -182,9 +182,6 @@ var actions = {
         var q = firstEntityValue(entities, 'search_query');
         if (q) {
             context.q = q;
-        }
-        if(sessions[sessionId]){
-            context.name = sessions[sessionId].name;
         }
         cb(context);
     },
