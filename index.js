@@ -44,7 +44,7 @@ app.post('/webhook/', function(req, res) {
         event = req.body.entry[0].messaging[i]
 
         if (event.message && event.message.text) {
-            var sessionId = findOrCreateSession(event.sender.id);
+            var sessionId = findOrCreateSession(event.sender.id, event);
 
             if (useWit) {
                 wit.runActions(
@@ -80,9 +80,10 @@ app.post('/webhook/', function(req, res) {
 
 var sessions = {};
 
-var findOrCreateSession = (fbid) => {
+var findOrCreateSession = (fbid, event) => {
     var sessionId;
-    // Let's see if we already have a session for the user fbid
+    console.log(util.inspect(event));
+    // check if we already have a session for the user fbid
     Object.keys(sessions).forEach(k => {
         if (sessions[k].fbid === fbid) {
             // Yep, got it!
@@ -90,10 +91,11 @@ var findOrCreateSession = (fbid) => {
         }
     });
     if (!sessionId) {
-        // No session found for user fbid, let's create a new one
+        // No session found for user fbid, create a new one
         sessionId = new Date().toISOString();
         sessions[sessionId] = {
             fbid: fbid,
+            name: event.sender.name
             context: {}
         };
     }
@@ -164,18 +166,13 @@ var firstEntityValue = (entities, entity) => {
 
 var actions = {
     say(sessionId, context, message, cb) {
-        // Our bot has something to say!
-        // Let's retrieve the Facebook user whose session belongs to
+        // Find the session
         var recipientId = sessions[sessionId].fbid;
         if (recipientId) {
-            // Yay, we found our recipient!
-            // Let's forward our bot response to her.
+            // Forward the message
             sendTextMessage(recipientId, message);
-
-            // Let's give the wheel back to our bot
         } else {
             console.log('Oops! Couldn\'t find user for session:', sessionId);
-            // Giving the wheel back to our bot
         }
         cb();
 
@@ -196,8 +193,6 @@ var actions = {
     error(sessionId, context, error) {
         console.log(error.message);
     }
-    // You should implement your custom actions here
-    // See https://wit.ai/docs/quickstart
 };
 
 var wit = new Wit(wit_token, actions)
