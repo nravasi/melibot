@@ -191,6 +191,7 @@ var actions = {
     search(sessionId, context, cb) {
         var recipientId = sessions[sessionId].fbid;
         searchClient.search(recipientId, context.q, handleClientResponse);
+        cb(context);
     },
     error(sessionId, context, error) {
         console.log(error.message);
