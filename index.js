@@ -183,6 +183,9 @@ var actions = {
         if (q) {
             context.q = q;
         }
+        if(sessions[sessionId]){
+            context.name = sessions[sessionId].name;
+        }
         cb(context);
     },
     search(sessionId, context, cb) {
