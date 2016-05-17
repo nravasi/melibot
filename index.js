@@ -41,7 +41,7 @@ app.post('/webhook/', function(req, res) {
     //use async
     messaging_events = req.body.entry[0].messaging;
     for (i = 0; i < messaging_events.length; i++) {
-        event = req.body.entry[0].messaging[i]
+        var event = req.body.entry[0].messaging[i]
 
         if (event.message && event.message.text) {
             var sessionId = findOrCreateSession(event.sender.id, event);

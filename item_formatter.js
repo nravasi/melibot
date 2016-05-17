@@ -8,11 +8,12 @@ var formatItems = function(results){
 			title: it.title,
 			subtitle: '$' + it.price,
 			image_url: _.replace(it.thumbnail, '-I', '-O'),	
-			buttons: [{
-				type: 'web_url',
-				url: it.permalink,
-				title: "Ver en MercadoLibre"
-			}]
+			item_url: it.permalink
+			// buttons: [{
+			// 	type: 'web_url',
+			// 	url: it.permalink,
+			// 	title: "Ver en MercadoLibre"
+			// }]
 		}
 	})
 }
