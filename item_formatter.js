@@ -6,7 +6,7 @@ var formatItems = function(results){
 	return _.map(results, function(it){
 		//console.log(util.inspect(it))
 		var subtitlePrefix = it.installments.quantity+'x $'+it.installments.amount
-		for (int i=subtitlePrefix.length; i<31;i++){
+		for (var i=subtitlePrefix.length; i<31;i++){
 			subtitlePrefix = subtitlePrefix + ' ' 
 		}
 		return {
