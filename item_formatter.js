@@ -9,11 +9,11 @@ var formatItems = function(results){
 			subtitle: it.title,
 			image_url: _.replace(it.thumbnail, '-I', '-O'),	
 			item_url: it.permalink
-			/*buttons: [{
-				type: 'web_url',
-				url: it.permalink,
-				title: "Ver en MercadoLibre"
-			}]*/
+			// buttons: [{
+			// 	type: 'web_url',
+			// 	url: it.permalink,
+			// 	title: "Ver en MercadoLibre"
+			// }]
 		}
 	})
 }
