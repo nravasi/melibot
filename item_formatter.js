@@ -8,7 +8,7 @@ var formatItems = function(results){
 		var subtitlePrefix = it.installments.quantity+'x $'+it.installments.amount
 		return {
 			title: '$ ' + it.price,
-			subtitle: subtitlePrefix + '\n' + it.title,
+			subtitle: it.title,
 			image_url: _.replace(it.thumbnail, '-I', '-O'),	
 			item_url: it.permalink
 			/*buttons: [{
