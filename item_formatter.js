@@ -5,13 +5,10 @@ var formatItems = function(results){
 
 	return _.map(results, function(it){
 		//console.log(util.inspect(it))
-		var subtitlePrefix = it.installments.quantity+'x $'+it.installments.amount
-		for (var i=subtitlePrefix.length; i<30;i++){
-			 subtitlePrefix = subtitlePrefix + '.' 
-		}
+
 		return {
 			title: '$ ' + it.price,
-			subtitle: subtitlePrefix + it.title,
+			subtitle: subtitlePrefix + '\n' +it.title,
 			image_url: _.replace(it.thumbnail, '-I', '-O'),	
 			item_url: it.permalink
 			/*buttons: [{
@@ -26,3 +23,4 @@ var formatItems = function(results){
 module.exports = {
 	formatItems: formatItems
 }
+
