@@ -82,7 +82,6 @@ var sessions = {};
 
 var findOrCreateSession = (fbid, event) => {
     var sessionId;
-    console.log(util.inspect(event));
     // check if we already have a session for the user fbid
     Object.keys(sessions).forEach(k => {
         if (sessions[k].fbid === fbid) {
