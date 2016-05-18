@@ -178,7 +178,6 @@ var actions = {
 
     },
     merge(sessionId, context, entities, message, cb) {
-        console.log("Entities: " + util.inspect(entities))
         var q = firstEntityValue(entities, 'search_query');
         if (q) {
             context.q = q;
