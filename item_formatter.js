@@ -7,11 +7,11 @@ var formatItems = function(results){
 		//console.log(util.inspect(it))
 		var subtitlePrefix = it.installments.quantity+'x $'+it.installments.amount
 		for (var i=subtitlePrefix.length; i<31;i++){
-			 subtitlePrefix = subtitlePrefix + ' ' 
+			 subtitlePrefix = subtitlePrefix + '.' 
 		}
 		return {
 			title: '$ ' + it.price,
-			subtitle: subtitlePrefix+ '<br>' + it.title,
+			subtitle: subtitlePrefix + it.title,
 			image_url: _.replace(it.thumbnail, '-I', '-O'),	
 			item_url: it.permalink
 			/*buttons: [{
