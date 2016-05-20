@@ -200,7 +200,7 @@ var actions = {
         var recipientId = sessions[sessionId].fbid;
         sendTextMessage(recipientId, "Puedo ayudarte a encontrar publicaciones, tipea por ejemplo \"buscar celulares\"")
         cb(context);
-    }
+    },
     error(sessionId, context, error) {
         console.log(error.message);
     }
