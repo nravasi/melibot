@@ -106,7 +106,7 @@ var handleClientResponse = function(senderId, err, body) {
         sendTextMessage(senderId, "Hubo un error");
     } else {
         if (!body.results || !body.results.length) {
-            return sendTextMessage(senderId, "No siento! No encontré resultados para " + body.query);
+            return sendTextMessage(senderId, "Lo siento! No encontré resultados para " + body.query);
         }
         var elements = item_formatter.formatItems(body.results)
 
