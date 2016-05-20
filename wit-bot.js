@@ -1,6 +1,7 @@
 var Wit = require('node-wit').Wit;
 var searchClient = require('./search_client')
 var responder = require('./responder')
+var sessions = require('./sessions');
 
 var useWit = true;
 
