@@ -26,6 +26,6 @@ var getSession = (sid) => {
 
 
 module.exports = {
-    createSession: createSession
+    createSession: createSession,
     getSession: getSession
 }
