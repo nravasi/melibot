@@ -36,7 +36,7 @@ var sendResults = function(senderId, err, body) {
         if (!body.results || !body.results.length) {
             return sendTextMessage(senderId, "Lo siento! No encontré resultados para " + body.query);
         }
-        var elements = item_formatter.formatItems(body.results)
+        var elements = formatItems(body.results)
 
         sendTextMessage(senderId, 'Encontré estas publicaciones para ' + body.query)
 
