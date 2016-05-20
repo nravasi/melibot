@@ -191,11 +191,16 @@ var actions = {
         cb(context);
     },
 
-    help(sessionId, context, cb) {
+    site_question(sessionId, context, cb) {
         var recipientId = sessions[sessionId].fbid;
-        sendTextMessage(recipientId,"Podes encontrar nuestra ayuda en http://ayuda.mercadolibre.com.ar/ayuda" )
+        sendTextMessage(recipientId, "Podes encontrar nuestra ayuda en http://ayuda.mercadolibre.com.ar/ayuda")
         cb(context);
     },
+    help(sessionId, context, cb){
+        var recipientId = sessions[sessionId].fbid;
+        sendTextMessage(recipientId, "Puedo ayudarte a encontrar publicaciones, tipea por ejemplo \"buscar celulares\"")
+        cb(context);
+    }
     error(sessionId, context, error) {
         console.log(error.message);
     }
