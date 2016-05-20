@@ -64,7 +64,7 @@ function formatItems(results){
     })
 }
 
-module.exports {
+module.exports = {
     sendTextMessage: sendTextMessage,
     sendResults: sendResults
 }
