@@ -110,8 +110,9 @@ var handleClientResponse = function(senderId, err, body) {
         }
         var elements = item_formatter.formatItems(body.results)
 
+        sendTextMessage(senderId, 'Resultados encontrados para ' + body.query)
+        
         return sendMessage(senderId, {
-            "text": 'Resultados encontrados para ' + body.query,
             "attachment": {
                 "type": "template",
                 "payload": {
