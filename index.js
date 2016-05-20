@@ -4,7 +4,9 @@ var request = require('request')
 var searchClient = require('./search_client')
 var item_formatter = require('./item_formatter')
 var util = require('util');
+var sessions = require('./sessions');
 var app = express()
+// var bot = require('./wit-bot.js')
 var Wit = require('node-wit').Wit;
 
 app.set('port', (process.env.PORT || 5000))
@@ -44,13 +46,13 @@ app.post('/webhook/', function(req, res) {
         var event = req.body.entry[0].messaging[i]
 
         if (event.message && event.message.text) {
-            var sessionId = findOrCreateSession(event.sender.id, event);
+            var sessionId = sessions.createSession(event.sender.id);
 
             if (useWit) {
                 wit.runActions(
                     sessionId,
                     event.message.text,
-                    sessions[sessionId].context,
+                    sessions.getSession(sessionId).context,
                     (error, context) => {
                         if (error) {
                             console.log('Oops! Got an error from Wit:', error);
@@ -67,7 +69,7 @@ app.post('/webhook/', function(req, res) {
                             // }
 
                             // Updating the user's current session state
-                            sessions[sessionId].context = context;
+                            sessions.getSession(sessionId).context = context;
                         }
                     });
             } else {
@@ -77,29 +79,6 @@ app.post('/webhook/', function(req, res) {
     }
     res.sendStatus(200);
 });
-
-var sessions = {};
-
-var findOrCreateSession = (fbid, event) => {
-    var sessionId;
-    // check if we already have a session for the user fbid
-    Object.keys(sessions).forEach(k => {
-        if (sessions[k].fbid === fbid) {
-            // Yep, got it!
-            sessionId = k;
-        }
-    });
-    if (!sessionId) {
-        // No session found for user fbid, create a new one
-        sessionId = new Date().toISOString();
-        sessions[sessionId] = {
-            fbid: fbid,
-            name: event.sender.name,
-            context: {}
-        };
-    }
-    return sessionId;
-};
 
 var handleClientResponse = function(senderId, err, body) {
     if (err) {
@@ -168,10 +147,10 @@ var firstEntityValue = (entities, entity) => {
 var actions = {
     say(sessionId, context, message, cb) {
         // Find the session
-        var recipientId = sessions[sessionId].fbid;
+        var recipientId = sessions.getSession(sessionId).fbid;
         if (recipientId) {
             // Forward the message
-            sendTextMessage(recipientId, message.replace("$name$", sessions[sessionId].name));
+            sendTextMessage(recipientId, message);
         } else {
             console.log('Oops! Couldn\'t find user for session:', sessionId);
         }
@@ -186,18 +165,18 @@ var actions = {
         cb(context);
     },
     search(sessionId, context, cb) {
-        var recipientId = sessions[sessionId].fbid;
+        var recipientId = sessions.getSession(sessionId).fbid;
         searchClient.search(recipientId, context.q, handleClientResponse);
         cb(context);
     },
 
     site_question(sessionId, context, cb) {
-        var recipientId = sessions[sessionId].fbid;
+        var recipientId = sessions.getSession(sessionId).fbid;
         sendTextMessage(recipientId, "Podes encontrar nuestra ayuda en http://ayuda.mercadolibre.com.ar/ayuda")
         cb(context);
     },
     help(sessionId, context, cb){
-        var recipientId = sessions[sessionId].fbid;
+        var recipientId = sessions.getSession(sessionId).fbid;
         sendTextMessage(recipientId, "Puedo ayudarte a encontrar publicaciones, tipea por ejemplo \"buscar celulares\"")
         cb(context);
     },
