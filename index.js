@@ -190,6 +190,12 @@ var actions = {
         searchClient.search(recipientId, context.q, handleClientResponse);
         cb(context);
     },
+
+    help(sessionId, context, cb) {
+        var recipientId = sessions[sessionId].fbid;
+        sendTextMessage(recipientId,"Podes encontrar nuestra ayuda en http://ayuda.mercadolibre.com.ar/ayuda" )
+        cb(context);
+    },
     error(sessionId, context, error) {
         console.log(error.message);
     }
