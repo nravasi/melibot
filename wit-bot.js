@@ -75,7 +75,7 @@ var actions = {
 	}
 };
 
-var wit = new Wit(process.evn.WIT_TOKEN, actions)
+var wit = new Wit(process.env.WIT_TOKEN, actions)
 
 
 function firstEntityValue(entities, entity) {
