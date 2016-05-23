@@ -1,6 +1,5 @@
 var Wit = require('node-wit').Wit;
 var searchClient = require('./search_client')
-var facebookClient = require('./facebook_client')
 var responder = require('./responder')
 var sessions = require('./sessions');
 
