@@ -57,8 +57,7 @@ var actions = {
 	},
 
 	greeting(sessionId, context, cb) {
-		var recipientId = sessions.getSession(sessionId).fbid;
-		responder.getUserInfo(recipientId, function(fname) {
+		responder.getUserInfo(getFBId(sessionId), function(fname) {
 			var greetingText = "Hola, " + fname + "! Qué estás buscando hoy?"
 			responder.sendTextMessage(recipientId, greetingText)
 		});
@@ -66,19 +65,20 @@ var actions = {
 		cb(context);
 	},
 	search(sessionId, context, cb) {
-		var recipientId = sessions.getSession(sessionId).fbid;
-		searchClient.search(recipientId, context.q, responder.sendResults);
+		searchClient.search(getFBId(sessionId), context.q, responder.sendResults);
 		cb(context);
 	},
+	sell(sessionId, context, cb){
+		responder.sendTextMessage(getFBId(sessionId), 'Podés publicar tu producto aquí: https://vender.mercadolibre.com.ar/sell')
+		cb(context)
+	}
 
 	site_question(sessionId, context, cb) {
-		var recipientId = sessions.getSession(sessionId).fbid;
-		responder.sendTextMessage(recipientId, "Podés encontrar nuestra ayuda en http://ayuda.mercadolibre.com.ar/ayuda")
+		responder.sendTextMessage(getFBId(sessionId), "Podés encontrar nuestra ayuda en http://ayuda.mercadolibre.com.ar/ayuda")
 		cb(context);
 	},
 	help(sessionId, context, cb) {
-		var recipientId = sessions.getSession(sessionId).fbid;
-		responder.sendTextMessage(recipientId, "Puedo ayudarte a encontrar publicaciones, tipea por ejemplo \"buscar celulares\"")
+		responder.sendTextMessage(getFBId(sessionId), "Puedo ayudarte a encontrar publicaciones, tipea por ejemplo \"buscar celulares\"")
 		cb(context);
 	},
 	error(sessionId, context, error) {
@@ -88,6 +88,9 @@ var actions = {
 
 var wit = new Wit(process.env.WIT_TOKEN, actions)
 
+function getFBId(sessionId){
+	return sessions.getSession(sessionId).fbid;
+}
 
 function firstEntityValue(entities, entity) {
 	var val = entities && entities[entity] &&
