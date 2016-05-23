@@ -77,7 +77,7 @@ var sendResults = function(senderId, err, body) {
                     'buttons': [{
                         'type': 'web_url',
                         'title': 'Ver más resultados',
-                        'url': 'listado.mercadolibre.com.ar/' + body.query;
+                        'url': 'listado.mercadolibre.com.ar/' + body.query
                     }]
                 }
             }
