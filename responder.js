@@ -26,7 +26,6 @@ function sendMessage(sender, data) {
 
 
 function getUserInfo(sender) {
-    console.log ("ESTOY ACA")
     request({
         url: 'https://graph.facebook.com/v2.6/' + sender,
         qs: {
