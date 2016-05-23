@@ -23,6 +23,23 @@ function sendMessage(sender, data) {
     })
 }
 
+function getUserInfo(sender) {
+    request({
+        url: 'https://graph.facebook.com/v2.6/' + sender,
+        qs: {
+            access_token: process.env.FB_TOKEN
+        },
+        method: 'GET'
+    }, function(error, response, body){
+      if(error){
+        return callback(sender, error);
+      }
+      console.log("La response es" + util.inspect(response, false, null));
+
+      return callback(sender, undefined, JSON.parse(body));
+    });
+}
+
 var sendTextMessage = function(senderId, text) {
     sendMessage(senderId, {
         text: text
