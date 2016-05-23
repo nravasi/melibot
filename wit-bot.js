@@ -67,6 +67,7 @@ var actions = {
 	},
 	search(sessionId, context, cb) {
 		searchClient.search(getFBId(sessionId), context.q, responder.sendResults);
+		delete context.q;
 		cb(context);
 	},
 	sell(sessionId, context, cb) {
