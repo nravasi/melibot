@@ -37,7 +37,7 @@ function getUserInfo(sender) {
       if(error){
         console.log('Error geting info: ', error)
       }
-      console.log(JSON.parse(body));
+      console.log(first_name);
       return JSON.parse(body);
     });
 }
