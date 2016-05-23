@@ -57,7 +57,8 @@ var actions = {
 	},
 
 	greeting(sessionId, context, cb) {
-		responder.getUserInfo(getFBId(sessionId), function(fname) {
+		var recipientId = getFBId(sessionId)
+		responder.getUserInfo(recipientId, function(fname) {
 			var greetingText = "Hola, " + fname + "! Qué estás buscando hoy?"
 			responder.sendTextMessage(recipientId, greetingText)
 		});
@@ -71,7 +72,7 @@ var actions = {
 	sell(sessionId, context, cb){
 		responder.sendTextMessage(getFBId(sessionId), 'Podés publicar tu producto aquí: https://vender.mercadolibre.com.ar/sell')
 		cb(context)
-	},
+	}
 
 	site_question(sessionId, context, cb) {
 		responder.sendTextMessage(getFBId(sessionId), "Podés encontrar nuestra ayuda en http://ayuda.mercadolibre.com.ar/ayuda")
