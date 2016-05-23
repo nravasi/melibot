@@ -83,5 +83,6 @@ function formatItems(results){
 
 module.exports = {
     sendTextMessage: sendTextMessage,
-    sendResults: sendResults
+    sendResults: sendResults,
+    getUserInfo:getUserInfo
 }
