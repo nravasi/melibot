@@ -71,7 +71,7 @@ var actions = {
 	sell(sessionId, context, cb){
 		responder.sendTextMessage(getFBId(sessionId), 'Podés publicar tu producto aquí: https://vender.mercadolibre.com.ar/sell')
 		cb(context)
-	}
+	},
 
 	site_question(sessionId, context, cb) {
 		responder.sendTextMessage(getFBId(sessionId), "Podés encontrar nuestra ayuda en http://ayuda.mercadolibre.com.ar/ayuda")
