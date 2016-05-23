@@ -62,7 +62,7 @@ var actions = {
 			console.log('El name es:' +
 				fname);
 			// var greetingText = "Hola! Qué estás buscando hoy?"
-			var greetingText = "Hola " + fname + "! Qué estás buscando hoy?"
+			var greetingText = "Hola, " + fname + "! Qué estás buscando hoy?"
 			responder.sendTextMessage(recipientId, greetingText)
 		});
 
