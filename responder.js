@@ -57,15 +57,29 @@ var sendResults = function(senderId, err, body) {
         }
         var elements = formatItems(body.results)
 
-        sendTextMessage(senderId, 'Encontré estas publicaciones para ' + body.query)
+        // sendTextMessage(senderId, 'Encontré estas publicaciones para ' + body.query)
 
-        elements.push({
-            'title': 'Ver más resultados',
-            'subtitle':'alalalla',
-            'image_url': 'http://static.mlstatic.com/org-img/homesnw/mercado-libre.png',
-            'item_url': 'listado.mercadolibre.com.ar/' + body.query
-        })
+        // elements.push({
+        //     'title': 'Ver más resultados',
+        //     'subtitle':'alalalla',
+        //     'image_url': 'http://static.mlstatic.com/org-img/homesnw/mercado-libre.png',
+        //     'item_url': 'listado.mercadolibre.com.ar/' + body.query
+        // })
 
+        return sendMessage(senderId, {
+            'attachment': {
+                'type': 'template',
+                'payload': {
+                    'template_type': 'button',
+                    'text': 'Resultados para ' + body.query
+                    'buttons': [{
+                        'type': 'web_url',
+                        'title': 'Ver más resultados',
+                        'url': 'listado.mercadolibre.com.ar/' + body.query
+                    }]
+                }
+            }
+        });
       return  sendMessage(senderId, {
             'attachment': {
                 'type': 'template',
@@ -76,19 +90,6 @@ var sendResults = function(senderId, err, body) {
             }
         });
 
-        // return sendMessage(senderId, {
-        //     'attachment': {
-        //         'type': 'template',
-        //         'payload': {
-        //             'template_type': 'button',
-        //             'buttons': [{
-        //                 'type': 'web_url',
-        //                 'title': 'Ver más resultados',
-        //                 'url': 'listado.mercadolibre.com.ar/' + body.query
-        //             }]
-        //         }
-        //     }
-        // });
     }
 }
 
