@@ -29,15 +29,15 @@ function getUserInfo(sender) {
     request({
         url: 'https://graph.facebook.com/v2.6/' + sender,
         qs: {
-            fields:'first_name',
+            fields: 'first_name',
             access_token: process.env.FB_TOKEN
         },
         method: 'GET'
-    }, function(error, response, body){
-      if(error){
-        console.log('Error getting info: ', error)
-      }
-    
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error getting info: ', error)
+        }
+
         return JSON.parse(body);
     });
 }
@@ -50,39 +50,48 @@ var sendTextMessage = function(senderId, text) {
 
 var sendResults = function(senderId, err, body) {
     if (err) {
-        sendTextMessage(senderId, "Hubo un error");
+        sendTextMessage(senderId, 'Hubo un error');
     } else {
         if (!body.results || !body.results.length) {
-            return sendTextMessage(senderId, "Lo siento! No encontré resultados para " + body.query);
+            return sendTextMessage(senderId, 'Lo siento! No encontré resultados para ' + body.query);
         }
         var elements = formatItems(body.results)
 
-        elements.push({
-            title: 'Ver más resultados',
-            item_url: 'listado.mercadolibre.com.ar/' + body.query
-        })
-
         sendTextMessage(senderId, 'Encontré estas publicaciones para ' + body.query)
 
+        sendMessage(senderId, {
+            'attachment': {
+                'type': 'template',
+                'payload': {
+                    'template_type': 'generic',
+                    'elements': elements
+                }
+            }
+        });
+
         return sendMessage(senderId, {
-            "attachment": {
-                "type": "template",
-                "payload": {
-                    "template_type": "generic",
-                    "elements": elements
+            'attachment': {
+                'type': 'template',
+                'payload': {
+                    'template_type': 'buttons',
+                    'buttons': [{
+                        'type': 'web_url',
+                        'title': 'Ver más resultados',
+                        'url': 'listado.mercadolibre.com.ar/' + body.query;
+                    }]
                 }
             }
         });
     }
 }
 
-function formatItems(results){
-    return _.map(results, function(it){
-        var subtitlePrefix = it.installments.quantity+'x $'+it.installments.amount
+function formatItems(results) {
+    return _.map(results, function(it) {
+        var subtitlePrefix = it.installments.quantity + 'x $' + it.installments.amount
         return {
             title: '$ ' + it.price,
             subtitle: it.title,
-            image_url: _.replace(it.thumbnail, '-I', '-O'), 
+            image_url: _.replace(it.thumbnail, '-I', '-O'),
             item_url: it.permalink
         }
     })
@@ -91,5 +100,5 @@ function formatItems(results){
 module.exports = {
     sendTextMessage: sendTextMessage,
     sendResults: sendResults,
-    getUserInfo:getUserInfo
+    getUserInfo: getUserInfo
 }
