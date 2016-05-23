@@ -37,8 +37,7 @@ function getUserInfo(sender) {
       if(error){
         console.log('Error getting info: ', error)
       }
-      console.log ("METODO" + body.first_name)
-      return body.first_name;
+      return body;
     });
 }
 
