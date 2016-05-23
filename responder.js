@@ -25,7 +25,7 @@ function sendMessage(sender, data) {
 }
 
 
-function getUserInfo(sender) {
+function getUserInfo(sender, callback) {
     request({
         url: 'https://graph.facebook.com/v2.6/' + sender,
         qs: {
@@ -38,7 +38,7 @@ function getUserInfo(sender) {
             console.log('Error getting info: ', error)
         }
 
-        return JSON.parse(body);
+        return callback(JSON.parse(body).first_name);
     });
 }
 
