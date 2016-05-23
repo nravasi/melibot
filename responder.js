@@ -30,7 +30,7 @@ function getUserInfo(sender) {
         url: 'https://graph.facebook.com/v2.6/' + sender,
         qs: {
             access_token: process.env.FB_TOKEN,
-            fields:'first_name''
+            fields:'first_name'
         },
         method: 'GET'
     }, function(error, response, body){
