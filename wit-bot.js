@@ -58,9 +58,9 @@ var actions = {
 
 	greeting(sessionId, context, cb) {
 		var recipientId = sessions.getSession(sessionId).fbid;
-		console.log(name);
 		var name = responder.getUserInfo(recipientId);
-		var greetingText = "Hola " + name  +"! Qué estás buscando hoy?"
+		console.log(JSON.parse(name));
+		var greetingText = "Hola " + JSON.parse(name).first_name  +"! Qué estás buscando hoy?"
 		responder.sendTextMessage(recipientId, greetingText)
 		cb(context);
 	},
