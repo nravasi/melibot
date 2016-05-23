@@ -55,9 +55,9 @@ var sendResults = function(senderId, err, body) {
         if (!body.results || !body.results.length) {
             return sendTextMessage(senderId, 'Lo siento! No encontré resultados para ' + body.query);
         }
-        var elements = formatItems(body.results)
+        var elements = formatItems(body.results, body.query)
 
-        // sendTextMessage(senderId, 'Encontré estas publicaciones para ' + body.query)
+        sendTextMessage(senderId, 'Encontré estas publicaciones para ' + body.query)
 
         // elements.push({
         //     'title': 'Ver más resultados',
@@ -66,21 +66,21 @@ var sendResults = function(senderId, err, body) {
         //     'item_url': 'listado.mercadolibre.com.ar/' + body.query
         // })
 
-        sendMessage(senderId, {
-            'attachment': {
-                'type': 'template',
-                'payload': {
-                    'template_type': 'button',
-                    'text': 'Resultados para ' + body.query,
-                    'buttons': [{
-                        'type': 'web_url',
-                        'title': 'Ver más resultados',
-                        'url': 'listado.mercadolibre.com.ar/' + body.query
-                    }]
-                }
-            }
-        });
-        
+        // sendMessage(senderId, {
+        //     'attachment': {
+        //         'type': 'template',
+        //         'payload': {
+        //             'template_type': 'button',
+        //             'text': 'Resultados para ' + body.query,
+        //             'buttons': [{
+        //                 'type': 'web_url',
+        //                 'title': 'Ver más resultados',
+        //                 'url': 'listado.mercadolibre.com.ar/' + body.query
+        //             }]
+        //         }
+        //     }
+        // });
+
         return sendMessage(senderId, {
             'attachment': {
                 'type': 'template',
@@ -94,14 +94,19 @@ var sendResults = function(senderId, err, body) {
     }
 }
 
-function formatItems(results) {
+function formatItems(results, q) {
     return _.map(results, function(it) {
         var subtitlePrefix = it.installments.quantity + 'x $' + it.installments.amount
         return {
             title: '$ ' + it.price,
             subtitle: it.title,
             image_url: _.replace(it.thumbnail, '-I', '-O'),
-            item_url: it.permalink
+            item_url: it.permalink,
+            'buttons': [{
+                        'type': 'web_url',
+                        'title': 'Ver más resultados',
+                        'url': 'listado.mercadolibre.com.ar/' + q
+                    }]
         }
     })
 }
