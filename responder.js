@@ -28,7 +28,8 @@ function getUserInfo(sender) {
     request({
         url: 'https://graph.facebook.com/v2.6/' + sender,
         qs: {
-            access_token: process.env.FB_TOKEN
+            access_token: process.env.FB_TOKEN,
+            fields='first_name,last_name,profile_pic,locale,timezone,gender'
         },
         method: 'GET'
     }, function(error, response, body){
@@ -36,6 +37,7 @@ function getUserInfo(sender) {
         return callback(sender, error);
       }
       console.log("La response es" + util.inspect(response, false, null));
+      console.log("El nombre es" + util.inspect(first_name, false, null));
 
       return callback(sender, undefined, JSON.parse(body));
     });
