@@ -73,7 +73,7 @@ var sendResults = function(senderId, err, body) {
             'attachment': {
                 'type': 'template',
                 'payload': {
-                    'template_type': 'buttons',
+                    'template_type': 'button',
                     'buttons': [{
                         'type': 'web_url',
                         'title': 'Ver más resultados',
