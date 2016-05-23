@@ -57,6 +57,11 @@ var sendResults = function(senderId, err, body) {
         }
         var elements = formatItems(body.results)
 
+        elements.push({
+            title: 'Ver más resultados',
+            item_url: 'listado.mercadolibre.com.ar/' + body.query
+        })
+
         sendTextMessage(senderId, 'Encontré estas publicaciones para ' + body.query)
 
         return sendMessage(senderId, {
