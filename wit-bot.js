@@ -57,7 +57,7 @@ var actions = {
 	},
 
 	greeting(sessionId, context, cb) {
-		var recipientId = getFBId(sessionId)
+		var recipientId = getFBId(sessionId);
 		responder.getUserInfo(recipientId, function(fname) {
 			var greetingText = "Hola, " + fname + "! Qué estás buscando hoy?"
 			responder.sendTextMessage(recipientId, greetingText)
@@ -69,10 +69,10 @@ var actions = {
 		searchClient.search(getFBId(sessionId), context.q, responder.sendResults);
 		cb(context);
 	},
-	sell(sessionId, context, cb){
+	sell(sessionId, context, cb) {
 		responder.sendTextMessage(getFBId(sessionId), 'Podés publicar tu producto aquí: https://vender.mercadolibre.com.ar/sell')
 		cb(context)
-	}
+	},
 
 	site_question(sessionId, context, cb) {
 		responder.sendTextMessage(getFBId(sessionId), "Podés encontrar nuestra ayuda en http://ayuda.mercadolibre.com.ar/ayuda")
@@ -89,7 +89,7 @@ var actions = {
 
 var wit = new Wit(process.env.WIT_TOKEN, actions)
 
-function getFBId(sessionId){
+function getFBId(sessionId) {
 	return sessions.getSession(sessionId).fbid;
 }
 
