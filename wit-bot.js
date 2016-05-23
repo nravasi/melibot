@@ -58,10 +58,7 @@ var actions = {
 
 	greeting(sessionId, context, cb) {
 		var recipientId = sessions.getSession(sessionId).fbid;
-		var name = responder.getUserInfo(recipientId, function(fname) {
-			console.log('El name es:' +
-				fname);
-			// var greetingText = "Hola! Qué estás buscando hoy?"
+		responder.getUserInfo(recipientId, function(fname) {
 			var greetingText = "Hola, " + fname + "! Qué estás buscando hoy?"
 			responder.sendTextMessage(recipientId, greetingText)
 		});
@@ -76,7 +73,7 @@ var actions = {
 
 	site_question(sessionId, context, cb) {
 		var recipientId = sessions.getSession(sessionId).fbid;
-		responder.sendTextMessage(recipientId, "Podes encontrar nuestra ayuda en http://ayuda.mercadolibre.com.ar/ayuda")
+		responder.sendTextMessage(recipientId, "Podés encontrar nuestra ayuda en http://ayuda.mercadolibre.com.ar/ayuda")
 		cb(context);
 	},
 	help(sessionId, context, cb) {
