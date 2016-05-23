@@ -37,7 +37,6 @@ function getUserInfo(sender) {
       if(error){
         console.log('Error getting info: ', error)
       }
-      console.log("La response es " + util.inspect(response, false, null));
       console.log("La body es " + util.inspect(body, false, null));
       console.log("La nombre es " + util.inspect(body.first_name, false, null));
       return JSON.parse(body.first_name);
