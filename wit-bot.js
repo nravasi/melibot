@@ -63,7 +63,7 @@ var actions = {
 
 	site_question(sessionId, context, cb) {
 		var recipientId = sessions.getSession(sessionId).fbid;
-		responder.getUserInfo(recipientId)
+		console.log(responder.getUserInfo(recipientId));
 		responder.sendTextMessage(recipientId, "Podes encontrar nuestra ayuda en http://ayuda.mercadolibre.com.ar/ayuda")
 		cb(context);
 	},

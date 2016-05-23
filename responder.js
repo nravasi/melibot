@@ -35,12 +35,9 @@ function getUserInfo(sender) {
         method: 'GET'
     }, function(error, response, body){
       if(error){
-        return callback(sender, error);
+        console.log('Error geting info: ', error)
       }
-      console.log("La response es" + util.inspect(response, false, null));
-      console.log("El nombre es" + util.inspect(first_name, false, null));
-
-      return callback(sender, undefined, JSON.parse(body));
+      return JSON.parse(body);
     });
 }
 
