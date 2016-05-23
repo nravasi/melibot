@@ -66,7 +66,7 @@ var sendResults = function(senderId, err, body) {
         //     'item_url': 'listado.mercadolibre.com.ar/' + body.query
         // })
 
-        return sendMessage(senderId, {
+        sendMessage(senderId, {
             'attachment': {
                 'type': 'template',
                 'payload': {
@@ -80,7 +80,8 @@ var sendResults = function(senderId, err, body) {
                 }
             }
         });
-      return  sendMessage(senderId, {
+        
+        return sendMessage(senderId, {
             'attachment': {
                 'type': 'template',
                 'payload': {
