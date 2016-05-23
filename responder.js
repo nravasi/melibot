@@ -29,7 +29,7 @@ function getUserInfo(sender) {
         url: 'https://graph.facebook.com/v2.6/' + sender,
         qs: {
             access_token: process.env.FB_TOKEN,
-            fields='first_name,last_name,profile_pic,locale,timezone,gender'
+            fields:'first_name,last_name,profile_pic,locale,timezone,gender'
         },
         method: 'GET'
     }, function(error, response, body){
