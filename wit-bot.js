@@ -55,6 +55,14 @@ var actions = {
 		}
 		cb(context);
 	},
+
+	greeting(sessionId, context, cb) {
+		var recipientId = sessions.getSession(sessionId).fbid;
+		var name = responder.getUserInfo(recipientId).first_name;
+		var greetingText = "Hola " + name  +"! Qué estás buscando hoy?"
+		responder.sendTextMessage(recipientId, greetingText)
+		cb(context);
+	},
 	search(sessionId, context, cb) {
 		var recipientId = sessions.getSession(sessionId).fbid;
 		searchClient.search(recipientId, context.q, responder.sendResults);
@@ -63,7 +71,6 @@ var actions = {
 
 	site_question(sessionId, context, cb) {
 		var recipientId = sessions.getSession(sessionId).fbid;
-		console.log(responder.getUserInfo(recipientId));
 		responder.sendTextMessage(recipientId, "Podes encontrar nuestra ayuda en http://ayuda.mercadolibre.com.ar/ayuda")
 		cb(context);
 	},
