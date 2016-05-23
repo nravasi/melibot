@@ -71,7 +71,7 @@ var sendResults = function(senderId, err, body) {
                 'type': 'template',
                 'payload': {
                     'template_type': 'button',
-                    'text': 'Resultados para ' + body.query
+                    'text': 'Resultados para ' + body.query,
                     'buttons': [{
                         'type': 'web_url',
                         'title': 'Ver más resultados',
