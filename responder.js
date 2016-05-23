@@ -35,10 +35,10 @@ function getUserInfo(sender) {
         method: 'GET'
     }, function(error, response, body){
       if(error){
-        console.log('Error geting info: ', error)
+        console.log('Error getting info: ', error)
       }
       console.log("La response es " + util.inspect(body.first_name, false, null));
-      return JSON.parse(body.first_name);
+      return JSON.parse(body);
     });
 }
 
