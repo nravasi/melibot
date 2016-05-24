@@ -96,7 +96,6 @@ var sendResults = function(senderId, err, body) {
 
 function formatItems(results, q) {
     return _.map(results, function(it) {
-        var subtitlePrefix = it.installments.quantity + 'x $' + it.installments.amount
         return {
             title: '$ ' + it.price,
             subtitle: it.title,
