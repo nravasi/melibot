@@ -49,19 +49,10 @@ var actions = {
 
 	},
 	merge(sessionId, context, entities, message, cb) {
-		var ref = firstEntityValue(entities, 'search_refine');
-		if (ref) {
-			console.log("Ref es: " + ref)
-			context.ref = ref;
-		} else {
-			delete context.ref
-		}
-
 		var q = firstEntityValue(entities, 'search_query');
 		if (q) {
 			context.q = q;
 		}
-
 		cb(context);
 	},
 
@@ -75,21 +66,8 @@ var actions = {
 		cb(context);
 	},
 	search(sessionId, context, cb) {
-		var q = context.q;
-		var refine = context.ref || ''
-		if (!q && refine) {
-			q = refine;
-			refine = ''
-		}
-
-		if (q) {
-			var query = q + (refine ? ' ' + refine : '')
-			searchClient.search(getFBId(sessionId), query, responder.sendResults);
-		}
-
-		delete context.refine
-
 		searchClient.search(getFBId(sessionId), context.q, responder.sendResults);
+		delete context.q;
 		cb(context);
 	},
 	sell(sessionId, context, cb) {
@@ -104,9 +82,6 @@ var actions = {
 	help(sessionId, context, cb) {
 		responder.sendTextMessage(getFBId(sessionId), "Puedo ayudarte a encontrar publicaciones, tipea por ejemplo \"buscar celulares\"")
 		cb(context);
-	},
-	refine(sessionId, context, cb) {
-		actions.search(sessionId, context, cb)
 	},
 	error(sessionId, context, error) {
 		console.log(error.message);
