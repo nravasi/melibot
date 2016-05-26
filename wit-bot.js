@@ -50,15 +50,18 @@ var actions = {
 	},
 	merge(sessionId, context, entities, message, cb) {
 		var ref = firstEntityValue(entities, 'search_refine');
-		if (ref && context.q) {
+		if (ref) {
 			console.log("Ref es: " + ref)
 			context.ref = ref;
 		} else {
-			var q = firstEntityValue(entities, 'search_query');
-			if (q) {
-				context.q = q;
-			}
+			delete context.ref
 		}
+
+		var q = firstEntityValue(entities, 'search_query');
+		if (q) {
+			context.q = q;
+		}
+
 		cb(context);
 	},
 
@@ -72,6 +75,18 @@ var actions = {
 		cb(context);
 	},
 	search(sessionId, context, cb) {
+		var q = context.q;
+		var refine = context.ref || ''
+		if (!q && refine) {
+			q = refine;
+			refine = ''
+		}
+
+		if (q) {
+			var query = q + (refine ? ' ' + refine : '')
+			searchClient.search(getFBId(sessionId), query, responder.sendResults);
+		}
+
 		searchClient.search(getFBId(sessionId), context.q, responder.sendResults);
 		cb(context);
 	},
@@ -88,18 +103,8 @@ var actions = {
 		responder.sendTextMessage(getFBId(sessionId), "Puedo ayudarte a encontrar publicaciones, tipea por ejemplo \"buscar celulares\"")
 		cb(context);
 	},
-	refine(sessionId, context, cb){
-		query = context.q;
-		refine = context.ref || ''
-		if(!query && refine){
-			query = refine;
-			refine = ''
-		}
-
-		if(query){
-			searchClient.search(getFBId(sessionId), query + ' ' + refine, responder.sendResults);
-		}
-		cb(context)
+	refine(sessionId, context, cb) {
+		search(sessionId, context, cb)
 	},
 	error(sessionId, context, error) {
 		console.log(error.message);
