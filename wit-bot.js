@@ -87,6 +87,8 @@ var actions = {
 			searchClient.search(getFBId(sessionId), query, responder.sendResults);
 		}
 
+		delete context.refine
+
 		searchClient.search(getFBId(sessionId), context.q, responder.sendResults);
 		cb(context);
 	},
