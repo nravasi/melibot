@@ -106,7 +106,7 @@ var actions = {
 		cb(context);
 	},
 	refine(sessionId, context, cb) {
-		search(sessionId, context, cb)
+		actions.search(sessionId, context, cb)
 	},
 	error(sessionId, context, error) {
 		console.log(error.message);
