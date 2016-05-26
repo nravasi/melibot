@@ -100,7 +100,7 @@ var actions = {
 			searchClient.search(getFBId(sessionId), query + ' ' + refine, responder.sendResults);
 		}
 		cb(context)
-	}
+	},
 	error(sessionId, context, error) {
 		console.log(error.message);
 	}
